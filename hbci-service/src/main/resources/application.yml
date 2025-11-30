@@ -49,6 +49,25 @@ quarkus:
       "org.kapott.hbci":
         level: INFO
 
+  # Security - Microsoft Entra ID (Azure AD) OAuth
+  oidc:
+    auth-server-url: ${AZURE_AD_AUTH_SERVER_URL:https://login.microsoftonline.com/<tenant-id>/v2.0}
+    client-id: ${AZURE_AD_CLIENT_ID:your-client-id}
+    credentials:
+      secret: ${AZURE_AD_CLIENT_SECRET:your-client-secret}
+    application-type: service
+    roles:
+      source: accesstoken
+    token:
+      issuer: ${AZURE_AD_ISSUER:https://login.microsoftonline.com/<tenant-id>/v2.0}
+
+  # HBCI Configuration
+  hbci:
+    # Encryption key for storing banking credentials (must be 32 characters)
+    encryption-key: ${HBCI_ENCRYPTION_KEY:change-this-to-32-char-secret!!}
+    # Default timeout for bank connections in seconds
+    connection-timeout: 30
+
 # Development profile
 "%dev":
   quarkus:
@@ -70,3 +89,15 @@ quarkus:
     hibernate-orm:
       database:
         generation: drop-and-create
+    # Disable OIDC for tests
+    oidc:
+      enabled: false
+    security:
+      users:
+        embedded:
+          enabled: true
+          plain-text: true
+          users:
+            testuser: testpassword
+          roles:
+            testuser: user,admin

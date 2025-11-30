@@ -6,6 +6,7 @@ import it.noxno.hbci.dto.TransactionRequestDTO;
 import it.noxno.hbci.model.BankAccount;
 import it.noxno.hbci.model.Transaction;
 import it.noxno.hbci.service.HBCIService;
+import jakarta.annotation.security.RolesAllowed;
 import jakarta.inject.Inject;
 import jakarta.validation.Valid;
 import jakarta.ws.rs.*;
@@ -14,6 +15,7 @@ import jakarta.ws.rs.core.Response;
 import org.eclipse.microprofile.openapi.annotations.Operation;
 import org.eclipse.microprofile.openapi.annotations.parameters.Parameter;
 import org.eclipse.microprofile.openapi.annotations.responses.APIResponse;
+import org.eclipse.microprofile.openapi.annotations.security.SecurityRequirement;
 import org.eclipse.microprofile.openapi.annotations.tags.Tag;
 
 import java.time.LocalDate;
@@ -21,11 +23,14 @@ import java.util.List;
 
 /**
  * REST resource for HBCI banking operations.
+ * Requires authentication via Microsoft Entra ID.
  */
 @Path("/api/hbci")
 @Produces(MediaType.APPLICATION_JSON)
 @Consumes(MediaType.APPLICATION_JSON)
 @Tag(name = "HBCI Operations", description = "Banking operations via HBCI/FinTS")
+@SecurityRequirement(name = "oauth2")
+@RolesAllowed({"user", "admin"})
 public class HBCIResource {
 
     @Inject

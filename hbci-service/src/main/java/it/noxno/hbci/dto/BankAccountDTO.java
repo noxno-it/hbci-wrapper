@@ -27,6 +27,12 @@ public class BankAccountDTO {
 
     public String customerId;
 
+    /**
+     * PIN for HBCI authentication (will be encrypted before storage).
+     * Only used during create/update, never returned.
+     */
+    public String pin;
+
     @NotNull
     public Boolean active = true;
 }

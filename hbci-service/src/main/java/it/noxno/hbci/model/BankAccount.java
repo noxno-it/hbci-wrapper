@@ -45,7 +45,11 @@ public class BankAccount extends PanacheEntityBase {
     @Column
     public String customerId;
 
-    @Column(nullable = false)
+    @Column
+    @Lob
+    public String encryptedPin;
+
+    @Column
     public Boolean active = true;
 
     @Column(nullable = false, updatable = false)

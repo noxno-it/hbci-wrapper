@@ -2,6 +2,9 @@ package it.noxno.hbci.resource;
 
 import it.noxno.hbci.dto.BankAccountDTO;
 import it.noxno.hbci.model.BankAccount;
+import it.noxno.hbci.service.EncryptionService;
+import jakarta.annotation.security.RolesAllowed;
+import jakarta.inject.Inject;
 import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
 import jakarta.ws.rs.*;
@@ -10,18 +13,25 @@ import jakarta.ws.rs.core.Response;
 import org.eclipse.microprofile.openapi.annotations.Operation;
 import org.eclipse.microprofile.openapi.annotations.parameters.Parameter;
 import org.eclipse.microprofile.openapi.annotations.responses.APIResponse;
+import org.eclipse.microprofile.openapi.annotations.security.SecurityRequirement;
 import org.eclipse.microprofile.openapi.annotations.tags.Tag;
 
 import java.util.List;
 
 /**
  * REST resource for managing bank accounts.
+ * Requires authentication via Microsoft Entra ID.
  */
 @Path("/api/accounts")
 @Produces(MediaType.APPLICATION_JSON)
 @Consumes(MediaType.APPLICATION_JSON)
 @Tag(name = "Bank Accounts", description = "Manage bank accounts for HBCI access")
+@SecurityRequirement(name = "oauth2")
+@RolesAllowed({"user", "admin"})
 public class BankAccountResource {
+
+    @Inject
+    EncryptionService encryptionService;
 
     @GET
     @Operation(summary = "List all bank accounts", description = "Retrieves all configured bank accounts")
@@ -45,7 +55,7 @@ public class BankAccountResource {
 
     @POST
     @Transactional
-    @Operation(summary = "Create bank account", description = "Creates a new bank account configuration")
+    @Operation(summary = "Create bank account", description = "Creates a new bank account configuration with encrypted PIN")
     @APIResponse(responseCode = "201", description = "Bank account created")
     @APIResponse(responseCode = "400", description = "Invalid input")
     public Response createAccount(@Valid BankAccountDTO dto) {
@@ -58,6 +68,12 @@ public class BankAccountResource {
         account.userId = dto.userId;
         account.customerId = dto.customerId;
         account.active = dto.active;
+        
+        // Encrypt PIN if provided
+        if (dto.pin != null && !dto.pin.isEmpty()) {
+            account.encryptedPin = encryptionService.encrypt(dto.pin);
+        }
+        
         account.persist();
 
         return Response.status(Response.Status.CREATED).entity(account).build();
@@ -83,6 +99,11 @@ public class BankAccountResource {
         account.userId = dto.userId;
         account.customerId = dto.customerId;
         account.active = dto.active;
+        
+        // Update PIN if provided
+        if (dto.pin != null && !dto.pin.isEmpty()) {
+            account.encryptedPin = encryptionService.encrypt(dto.pin);
+        }
 
         return Response.ok(account).build();
     }

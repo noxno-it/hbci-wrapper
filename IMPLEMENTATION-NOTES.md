@@ -23,33 +23,52 @@ This project provides a complete microservice architecture with:
 
 ## HBCI4Java Integration Status
 
-⚠️ **Important Note:**
+✅ **Completed (Steps 1 & 2):**
 
-The `HBCIService` class currently contains a **simplified placeholder implementation**. The actual HBCI4Java integration requires:
+### 1. **Authentication/Passport Implementation** ✅
+   - Real PIN/TAN authentication via HBCIPassport
+   - Certificate handling configured
+   - Secure credential storage with AES-256-GCM encryption
+   - EncryptionService for encrypting/decrypting banking PINs
+   - PIN stored encrypted in database
 
-### What's Missing:
-
-1. **Authentication/Passport Implementation**
-   - Real PIN/TAN authentication
-   - Certificate handling
-   - Secure credential storage
-
-2. **HBCI Communication**
+### 2. **HBCI Communication** ✅
    - Proper HBCIHandler initialization
-   - Connection to actual banks
-   - HBCI job execution
-   - Response parsing
+   - Connection to banks via configured HBCI URLs
+   - HBCI job execution (balance requests, transaction fetching)
+   - Response parsing from HBCI jobs
+   - HBCICallback implementation for PIN provisioning
+   - Resource cleanup (handler and passport)
 
-3. **SWIFT MT940 Parsing**
-   - Transaction format parsing
-   - Balance statement parsing
-   - Error handling
+### 3. **OAuth2 / Microsoft Entra ID Integration** ✅
+   - Quarkus OIDC integration
+   - Microsoft Entra ID (Azure AD) OAuth support
+   - Role-based access control (user, admin roles)
+   - Secure API endpoints with @RolesAllowed
+   - Test security configuration
+   - Complete setup documentation in ENTRA-ID-SETUP.md
 
-4. **Security Considerations**
-   - Credential encryption
-   - Secure storage of banking credentials
-   - SSL/TLS configuration
+⚠️ **What's Still Missing:**
+
+⚠️ **What's Still Missing:**
+
+1. **SWIFT MT940 Parsing Enhancement**
+   - Advanced transaction format parsing
+   - Balance statement detailed parsing
+   - Additional transaction metadata extraction
+
+2. **Production Hardening**
+   - Connection pooling for HBCI connections
+   - Retry logic for transient failures
+   - Circuit breakers for bank connectivity
+   - Comprehensive error handling for all HBCI error codes
+
+3. **Additional Features**
+   - Password rotation policies
+   - Audit logging for banking operations
    - Session management
+   - TAN (Transaction Authentication Number) handling for transfers
+   - SSL/TLS certificate validation configuration
 
 ### Why This Approach?
 

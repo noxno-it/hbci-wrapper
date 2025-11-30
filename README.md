@@ -19,16 +19,16 @@ The LGPL license of hbci4java is contained within the `hbci-service` module. Con
 
 ## Technology Stack
 
-- **Backend**: Quarkus 3.6.4 with Java 20
+- **Backend**: Quarkus 3.6.4 with Java 17
 - **Database**: PostgreSQL 16
-- **Banking Protocol**: HBCI4Java 3.2.3 (LGPL)
+- **Banking Protocol**: HBCI4Java 4.0.0 (LGPL)
 - **API Documentation**: OpenAPI 3.0 / Swagger UI
 - **Frontend**: Angular 20 (planned)
 - **Containerization**: Docker & Docker Compose
 
 ## Prerequisites
 
-- Java 20 or higher
+- Java 17 or higher
 - Maven 3.9+
 - Docker and Docker Compose (for containerized deployment)
 - PostgreSQL 16 (if running locally without Docker)

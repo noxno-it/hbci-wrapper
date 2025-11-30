@@ -16,7 +16,7 @@ This guide helps you integrate the HBCI Wrapper microservice into your Quarkus b
 
 Before integrating the HBCI Wrapper client, ensure you have:
 
-- Java 20 or higher
+- Java 17 or higher
 - Maven 3.9+ or Gradle 8+
 - A running instance of the HBCI Wrapper service
 - Access credentials for the HBCI service (if authentication is enabled)

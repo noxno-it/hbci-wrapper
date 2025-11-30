@@ -12,7 +12,7 @@ import java.time.LocalDateTime;
  */
 @Entity
 @Table(name = "transactions", indexes = {
-    @Index(name = "idx_account_date", columnList = "bank_account_id,value_date")
+    @Index(name = "idx_account_date", columnList = "bank_account_id,valueDate")
 })
 public class Transaction extends PanacheEntityBase {
 

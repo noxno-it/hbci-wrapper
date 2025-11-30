@@ -48,7 +48,7 @@
         <dependency>
             <groupId>com.github.hbci4j</groupId>
             <artifactId>hbci4j-core</artifactId>
-            <version>3.2.3</version>
+            <version>4.0.0</version>
         </dependency>
 
         <!-- Validation -->
@@ -70,7 +70,7 @@
         </dependency>
         <dependency>
             <groupId>io.quarkus</groupId>
-            <artifactId>quarkus-test-h2</artifactId>
+            <artifactId>quarkus-jdbc-h2</artifactId>
             <scope>test</scope>
         </dependency>
     </dependencies>

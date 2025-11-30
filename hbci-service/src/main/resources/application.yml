@@ -1,0 +1,72 @@
+quarkus:
+  application:
+    name: hbci-wrapper-service
+  
+  # HTTP Configuration
+  http:
+    port: 8080
+    cors:
+      ~: true
+      origins: "*"
+      methods: "GET,POST,PUT,DELETE,OPTIONS"
+      headers: "*"
+  
+  # Database Configuration
+  datasource:
+    db-kind: postgresql
+    username: hbci
+    password: hbci
+    jdbc:
+      url: jdbc:postgresql://localhost:5432/hbci
+      max-size: 16
+  
+  hibernate-orm:
+    database:
+      generation: update
+    log:
+      sql: false
+  
+  # OpenAPI/Swagger Configuration
+  smallrye-openapi:
+    path: /openapi
+    info-title: HBCI Wrapper API
+    info-version: 1.0.0
+    info-description: RESTful API for HBCI banking operations
+    info-contact-name: noxno.it
+    info-license-name: LGPL-2.1
+    info-license-url: https://www.gnu.org/licenses/old-licenses/lgpl-2.1.html
+  
+  swagger-ui:
+    always-include: true
+    path: /swagger-ui
+  
+  # Logging
+  log:
+    level: INFO
+    category:
+      "it.noxno.hbci":
+        level: DEBUG
+      "org.kapott.hbci":
+        level: INFO
+
+# Development profile
+"%dev":
+  quarkus:
+    hibernate-orm:
+      log:
+        sql: true
+    log:
+      level: DEBUG
+
+# Test profile  
+"%test":
+  quarkus:
+    datasource:
+      db-kind: h2
+      username: sa
+      password: 
+      jdbc:
+        url: jdbc:h2:mem:testdb
+    hibernate-orm:
+      database:
+        generation: drop-and-create

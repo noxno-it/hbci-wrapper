@@ -1,0 +1,240 @@
+openapi: 3.0.3
+info:
+  title: HBCI Wrapper API
+  version: 1.0.0
+  description: |
+    RESTful API for HBCI/FinTS banking operations.
+    
+    This service wraps the LGPL-licensed hbci4java library and provides
+    a clean REST API interface. The license boundary is at the service level,
+    meaning clients consuming this API are NOT subject to LGPL requirements.
+  license:
+    name: LGPL-2.1
+    url: https://www.gnu.org/licenses/old-licenses/lgpl-2.1.html
+  contact:
+    name: noxno.it
+
+servers:
+  - url: http://localhost:8080
+    description: Development server
+
+paths:
+  /api/accounts:
+    get:
+      tags:
+        - Bank Accounts
+      summary: List all bank accounts
+      operationId: listAccounts
+      responses:
+        '200':
+          description: List of bank accounts
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/BankAccount'
+    post:
+      tags:
+        - Bank Accounts
+      summary: Create bank account
+      operationId: createAccount
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/BankAccountDTO'
+      responses:
+        '201':
+          description: Bank account created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BankAccount'
+
+  /api/accounts/{id}:
+    get:
+      tags:
+        - Bank Accounts
+      summary: Get bank account by ID
+      operationId: getAccount
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: Bank account found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BankAccount'
+        '404':
+          description: Account not found
+
+  /api/hbci/balance/{accountId}:
+    get:
+      tags:
+        - HBCI Operations
+      summary: Get account balance
+      operationId: getBalance
+      parameters:
+        - name: accountId
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: Balance retrieved
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BalanceDTO'
+
+  /api/hbci/transactions/fetch:
+    post:
+      tags:
+        - HBCI Operations
+      summary: Fetch transactions from bank
+      operationId: fetchTransactions
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TransactionRequestDTO'
+      responses:
+        '200':
+          description: Transactions retrieved
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/TransactionDTO'
+
+components:
+  schemas:
+    BankAccount:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        accountNumber:
+          type: string
+        bankCode:
+          type: string
+        accountHolderName:
+          type: string
+        hbciUrl:
+          type: string
+        hbciVersion:
+          type: string
+        userId:
+          type: string
+        customerId:
+          type: string
+        active:
+          type: boolean
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+
+    BankAccountDTO:
+      type: object
+      required:
+        - accountNumber
+        - bankCode
+        - accountHolderName
+        - hbciUrl
+        - hbciVersion
+      properties:
+        accountNumber:
+          type: string
+        bankCode:
+          type: string
+        accountHolderName:
+          type: string
+        hbciUrl:
+          type: string
+        hbciVersion:
+          type: string
+        userId:
+          type: string
+        customerId:
+          type: string
+        active:
+          type: boolean
+          default: true
+
+    BalanceDTO:
+      type: object
+      properties:
+        accountId:
+          type: integer
+          format: int64
+        bookedBalance:
+          type: number
+        pendingBalance:
+          type: number
+        currency:
+          type: string
+        timestamp:
+          type: string
+
+    TransactionDTO:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        bankAccountId:
+          type: integer
+          format: int64
+        valueDate:
+          type: string
+          format: date
+        bookingDate:
+          type: string
+          format: date
+        amount:
+          type: number
+        currency:
+          type: string
+        purpose:
+          type: string
+        otherAccountNumber:
+          type: string
+        otherBankCode:
+          type: string
+        otherName:
+          type: string
+        transactionCode:
+          type: string
+
+    TransactionRequestDTO:
+      type: object
+      required:
+        - accountId
+        - startDate
+        - endDate
+      properties:
+        accountId:
+          type: integer
+          format: int64
+        startDate:
+          type: string
+          format: date
+        endDate:
+          type: string
+          format: date

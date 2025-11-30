@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <parent>
+        <groupId>it.noxno</groupId>
+        <artifactId>hbci-wrapper</artifactId>
+        <version>1.0.0-SNAPSHOT</version>
+    </parent>
+
+    <artifactId>hbci-client</artifactId>
+    <packaging>jar</packaging>
+
+    <name>HBCI Client</name>
+    <description>Generated OpenAPI client for HBCI Wrapper Service - License isolation boundary</description>
+
+    <properties>
+        <openapi-generator-version>7.1.0</openapi-generator-version>
+    </properties>
+
+    <dependencies>
+        <!-- OpenAPI Generator annotations -->
+        <dependency>
+            <groupId>io.swagger.core.v3</groupId>
+            <artifactId>swagger-annotations</artifactId>
+            <version>2.2.19</version>
+        </dependency>
+
+        <!-- REST client dependencies -->
+        <dependency>
+            <groupId>com.google.code.gson</groupId>
+            <artifactId>gson</artifactId>
+            <version>2.10.1</version>
+        </dependency>
+        <dependency>
+            <groupId>io.gsonfire</groupId>
+            <artifactId>gson-fire</artifactId>
+            <version>1.9.0</version>
+        </dependency>
+        <dependency>
+            <groupId>com.squareup.okhttp3</groupId>
+            <artifactId>okhttp</artifactId>
+            <version>4.12.0</version>
+        </dependency>
+        <dependency>
+            <groupId>com.squareup.okhttp3</groupId>
+            <artifactId>logging-interceptor</artifactId>
+            <version>4.12.0</version>
+        </dependency>
+        
+        <!-- Jakarta annotations for compatibility -->
+        <dependency>
+            <groupId>jakarta.annotation</groupId>
+            <artifactId>jakarta.annotation-api</artifactId>
+            <version>2.1.1</version>
+        </dependency>
+    </dependencies>
+
+    <build>
+        <plugins>
+            <!-- OpenAPI Generator Plugin -->
+            <plugin>
+                <groupId>org.openapitools</groupId>
+                <artifactId>openapi-generator-maven-plugin</artifactId>
+                <version>${openapi-generator-version}</version>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>generate</goal>
+                        </goals>
+                        <configuration>
+                            <!-- Input: OpenAPI specification from the service -->
+                            <inputSpec>${project.basedir}/src/main/resources/openapi.yaml</inputSpec>
+                            <!-- Output directory for generated code -->
+                            <output>${project.build.directory}/generated-sources/openapi</output>
+                            <!-- Generator: Java client -->
+                            <generatorName>java</generatorName>
+                            <!-- Library: okhttp-gson for modern HTTP client -->
+                            <library>okhttp-gson</library>
+                            <!-- Package configuration -->
+                            <apiPackage>it.noxno.hbci.client.api</apiPackage>
+                            <modelPackage>it.noxno.hbci.client.model</modelPackage>
+                            <invokerPackage>it.noxno.hbci.client</invokerPackage>
+                            <groupId>it.noxno</groupId>
+                            <artifactId>hbci-client</artifactId>
+                            <artifactVersion>${project.version}</artifactVersion>
+                            
+                            <configOptions>
+                                <sourceFolder>src/gen/java/main</sourceFolder>
+                                <java8>false</java8>
+                                <dateLibrary>java8</dateLibrary>
+                                <useJakartaEe>true</useJakartaEe>
+                                <openApiNullable>false</openApiNullable>
+                            </configOptions>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+            
+            <!-- Add generated sources to build path -->
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>build-helper-maven-plugin</artifactId>
+                <version>3.5.0</version>
+                <executions>
+                    <execution>
+                        <id>add-source</id>
+                        <phase>generate-sources</phase>
+                        <goals>
+                            <goal>add-source</goal>
+                        </goals>
+                        <configuration>
+                            <sources>
+                                <source>${project.build.directory}/generated-sources/openapi/src/gen/java/main</source>
+                            </sources>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+    </build>
+</project>

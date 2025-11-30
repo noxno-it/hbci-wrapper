@@ -1,6 +1,6 @@
 # HBCI Wrapper Microservice
 
-A comprehensive microservice for HBCI/FinTS banking operations, built with Quarkus, Java 20, PostgreSQL, and Angular 20.
+A comprehensive microservice for HBCI/FinTS banking operations, built with Quarkus, Java 17, PostgreSQL, and Angular 20.
 
 ## Overview
 
